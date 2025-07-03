@@ -42,17 +42,25 @@ export const FavoriteFilterButton = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Star 
-            size={16} 
+          <button
             onClick={handleClick}
             className={cn(
-              "cursor-pointer transition-colors hover:scale-110",
-              isFavorite ? "fill-yellow-400 text-yellow-400" : "text-gray-400 hover:text-gray-600"
+              "h-9 w-9 flex items-center justify-center rounded-md transition-colors",
+              isFavorite 
+                ? "text-yellow-500 hover:text-yellow-600 hover:bg-yellow-50" 
+                : "text-gray-400 hover:text-gray-600 hover:bg-gray-50"
             )}
-          />
+          >
+            <Star 
+              size={18} 
+              className={cn(
+                isFavorite ? "fill-yellow-500" : ""
+              )}
+            />
+          </button>
         </TooltipTrigger>
         <TooltipContent>
-          <p>{getTooltipText()}</p>
+          <p className="text-xs">{getTooltipText()}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

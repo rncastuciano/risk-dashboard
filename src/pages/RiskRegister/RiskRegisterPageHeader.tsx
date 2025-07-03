@@ -3,6 +3,8 @@ import { Button } from '@/components/ui/button';
 import { AddNewItemDropdown } from '@/components/layout/AddNewItemDropdown';
 import { FilterDropdown } from '@/components/shared/FilterDropdown';
 import { FilterConfig, GenericFilterState } from '@/types/filterConfig';
+import { RefreshCw } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface RiskRegisterPageHeaderProps {
   expandAll: boolean;
@@ -17,6 +19,7 @@ interface RiskRegisterPageHeaderProps {
   onSaveFavorite?: () => void;
   onRemoveFavorite?: () => void;
   onLoadFavorite?: () => void;
+  onRefresh?: () => void;
 }
 
 export function RiskRegisterPageHeader({
@@ -30,7 +33,8 @@ export function RiskRegisterPageHeader({
   isFavorite,
   onSaveFavorite,
   onRemoveFavorite,
-  onLoadFavorite
+  onLoadFavorite,
+  onRefresh
 }: RiskRegisterPageHeaderProps) {
   return (
     <div className="text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 py-0">
@@ -45,6 +49,23 @@ export function RiskRegisterPageHeader({
             </p>
           </div>
           <div className="flex items-center space-x-2">
+            {onRefresh && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={onRefresh}
+                      className="h-9 w-9 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+                    >
+                      <RefreshCw size={18} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-xs">Refresh data</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             <AddNewItemDropdown />
             <Button
               variant="outline"

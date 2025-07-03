@@ -12,6 +12,7 @@ import { Risk } from '@/types';
 import { topLevelRisks, allRisksData } from '@/data';
 
 export default function RiskRegister() {
+  const [refreshKey, setRefreshKey] = useState(0);
   const { filters: legacyFilters, clearFilters: legacyClearFilters, hasActiveFilters: legacyHasActiveFilters } = useFilters();
 
   // New generic filters for the dropdown
@@ -34,6 +35,13 @@ export default function RiskRegister() {
   const handleLoadFavorite = () => {
     const favoriteFilters = loadFavoriteFilter();
     setFilters(favoriteFilters);
+  };
+
+  const handleRefresh = () => {
+    // Force re-render and clear any cached state
+    setRefreshKey(prev => prev + 1);
+    // Optionally clear filters
+    // clearDropdownFilters();
   };
 
   // Get department data from local risk data using the new hook
@@ -136,6 +144,7 @@ export default function RiskRegister() {
               onSaveFavorite={saveFavoriteFilter}
               onRemoveFavorite={removeFavoriteFilter}
               onLoadFavorite={handleLoadFavorite}
+              onRefresh={handleRefresh}
             />
             
             <div className="py-8">

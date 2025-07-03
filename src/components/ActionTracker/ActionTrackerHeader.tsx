@@ -1,6 +1,9 @@
 
 import { FilterDropdown } from '@/components/shared/FilterDropdown';
 import { FilterConfig, GenericFilterState } from '@/types/filterConfig';
+import { Button } from '@/components/ui/button';
+import { RefreshCw } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ActionTrackerHeaderProps {
   filterConfig: FilterConfig;
@@ -12,6 +15,7 @@ interface ActionTrackerHeaderProps {
   onSaveFavorite: () => void;
   onRemoveFavorite: () => void;
   onLoadFavorite: () => void;
+  onRefresh?: () => void;
 }
 
 export const ActionTrackerHeader = ({
@@ -23,7 +27,8 @@ export const ActionTrackerHeader = ({
   isFavorite,
   onSaveFavorite,
   onRemoveFavorite,
-  onLoadFavorite
+  onLoadFavorite,
+  onRefresh
 }: ActionTrackerHeaderProps) => {
   return (
     <div className="text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 py-0">
@@ -38,6 +43,23 @@ export const ActionTrackerHeader = ({
             </p>
           </div>
           <div className="flex items-center space-x-2">
+            {onRefresh && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={onRefresh}
+                      className="h-9 w-9 flex items-center justify-center text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-md transition-colors"
+                    >
+                      <RefreshCw size={18} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="text-xs">Refresh data</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             <FilterDropdown
               config={filterConfig}
               filters={filters}

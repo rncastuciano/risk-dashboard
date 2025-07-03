@@ -11,6 +11,7 @@ import { others as actionTrackerData } from '@/data/actionTracker';
 
 export default function ActionTracker() {
   const [selectedSummaryStatuses, setSelectedSummaryStatuses] = useState<string[]>([]);
+  const [refreshKey, setRefreshKey] = useState(0);
 
   const { 
     filters, 
@@ -27,6 +28,13 @@ export default function ActionTracker() {
     loadFavoriteFilter,
     hasActiveFilters: hasFavoriteFilters
   } = useFavoriteFilters(filters);
+
+  const handleRefresh = () => {
+    // Force re-render and clear any cached state
+    setRefreshKey(prev => prev + 1);
+    // Optionally clear filters
+    // clearFilters();
+  };
 
   const handleLoadFavorite = () => {
     const favoriteFilters = loadFavoriteFilter();
@@ -141,6 +149,7 @@ export default function ActionTracker() {
               onSaveFavorite={saveFavoriteFilter}
               onRemoveFavorite={removeFavoriteFilter}
               onLoadFavorite={handleLoadFavorite}
+              onRefresh={handleRefresh}
             />
 
             <div className="py-8 space-y-6">
