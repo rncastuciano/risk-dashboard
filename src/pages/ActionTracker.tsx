@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useDepartmentData } from '@/hooks/useDepartmentData';
+import { useLocalDepartmentData } from '@/hooks/useLocalDepartmentData';
 import { useGenericFilters } from '@/hooks/useGenericFilters';
 import { useFavoriteFilters } from '@/hooks/useFavoriteFilters';
 import { createActionTrackerFilterConfig } from '@/config/actionTrackerFilterConfig';
@@ -33,12 +33,12 @@ export default function ActionTracker() {
     setFilters(favoriteFilters);
   };
 
-  // Fetch real department data
+  // Get department data from local action tracker data
   const { 
     departmentStructure, 
     departmentOptions, 
     loading: departmentLoading 
-  } = useDepartmentData();
+  } = useLocalDepartmentData(actionTrackerData);
 
   const handleSummaryStatusToggle = (status: string) => {
     const newStatuses = selectedSummaryStatuses.includes(status)

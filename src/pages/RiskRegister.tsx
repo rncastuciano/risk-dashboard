@@ -3,6 +3,7 @@ import { useState, useMemo } from 'react';
 import { useFilters } from '@/hooks/useFilters';
 import { useRiskExpansion } from '@/hooks/useRiskExpansion';
 import { useGenericFilters } from '@/hooks/useGenericFilters';
+import { useLocalDepartmentData } from '@/hooks/useLocalDepartmentData';
 import { useFavoriteFilters } from '@/hooks/useFavoriteFilters';
 import { RiskRegisterPageHeader } from './RiskRegister/RiskRegisterPageHeader';
 import { RiskRegisterTable } from './RiskRegister/RiskRegisterTable';
@@ -35,29 +36,11 @@ export default function RiskRegister() {
     setFilters(favoriteFilters);
   };
 
-  // Generate department structure from mock data
-  const departmentStructure = useMemo(() => {
-    const structure: { [department: string]: string[] } = {};
-    
-    allRisksData.forEach(risk => {
-      if (risk.department) {
-        if (!structure[risk.department]) {
-          structure[risk.department] = [];
-        }
-        
-        if (risk.subDepartment && !structure[risk.department].includes(risk.subDepartment)) {
-          structure[risk.department].push(risk.subDepartment);
-        }
-      }
-    });
-
-    // Sort departments and sub-departments for consistent display
-    Object.keys(structure).forEach(dept => {
-      structure[dept].sort();
-    });
-
-    return structure;
-  }, []);
+  // Get department data from local risk data using the new hook
+  const { 
+    departmentStructure, 
+    departmentOptions 
+  } = useLocalDepartmentData(allRisksData);
 
   // Generate risk category structure from mock data
   const riskCategoryStructure = useMemo(() => {
@@ -124,7 +107,6 @@ export default function RiskRegister() {
   };
 
   // Filter options - now using actual data from mock data
-  const departmentOptions = Object.keys(departmentStructure).sort();
   const ratingOptions = ['Critical', 'High', 'Medium', 'Low'];
   const statusOptions = ['Active', 'Closed', 'Open', 'In Progress', 'Planned', 'Under Review'];
 

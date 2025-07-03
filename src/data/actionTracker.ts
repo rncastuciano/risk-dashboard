@@ -10,7 +10,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "Closed",
     severity: "Medium",
-    dueDate: "2024-07-15",
+    dueDate: "2025-10-15",
     parentId: 11
   },
   {

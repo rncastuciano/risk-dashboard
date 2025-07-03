@@ -61,6 +61,8 @@ export const ActionTrackerSummary = ({
     const typeCards = [
       {
         type: 'Incident',
+        displayName: 'Incident',
+        pluralName: 'Incidents',
         count: summaryData.byType['Incident'] || 0,
         bgColor: 'bg-red-50',
         textColor: 'text-red-600',
@@ -71,6 +73,8 @@ export const ActionTrackerSummary = ({
       },
       {
         type: 'Issue',
+        displayName: 'Issue',
+        pluralName: 'Issues',
         count: summaryData.byType['Issue'] || 0,
         bgColor: 'bg-yellow-50',
         textColor: 'text-yellow-600',
@@ -81,6 +85,8 @@ export const ActionTrackerSummary = ({
       },
       {
         type: 'Risk Action',
+        displayName: 'Risk Action',
+        pluralName: 'Risk Actions',
         count: summaryData.byType['Risk Action'] || 0,
         bgColor: 'bg-purple-50',
         textColor: 'text-purple-600',
@@ -91,6 +97,8 @@ export const ActionTrackerSummary = ({
       },
       {
         type: 'General',
+        displayName: 'General',
+        pluralName: 'General',
         count: summaryData.byType['General'] || 0,
         bgColor: 'bg-gray-50',
         textColor: 'text-gray-600',
@@ -101,6 +109,8 @@ export const ActionTrackerSummary = ({
       },
       {
         type: 'Exception',
+        displayName: 'Exception',
+        pluralName: 'Exceptions',
         count: summaryData.byType['Exception'] || 0,
         bgColor: 'bg-orange-50',
         textColor: 'text-orange-600',
@@ -156,7 +166,7 @@ export const ActionTrackerSummary = ({
                   <IconComponent className={card.textColor} size={24} />
                 </div>
                 <div className={`text-2xl font-bold ${card.textColor} text-center`}>{card.count}</div>
-                <div className={`text-sm ${card.labelColor} text-center`}>{card.type}{card.count !== 1 ? 's' : ''}</div>
+                <div className={`text-sm ${card.labelColor} text-center`}>{card.count === 1 ? card.displayName : card.pluralName}</div>
               </div>
             );
           })}

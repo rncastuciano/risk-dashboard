@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useDepartmentData } from '@/hooks/useDepartmentData';
+import { useLocalDepartmentData } from '@/hooks/useLocalDepartmentData';
 import { useRiskCategoryData } from '@/hooks/useRiskCategoryData';
 import { useGenericFilters } from '@/hooks/useGenericFilters';
 import { useFavoriteFilters } from '@/hooks/useFavoriteFilters';
@@ -39,12 +39,12 @@ export default function Metrics() {
   // Use mock metrics data instead of Supabase
   // const { data: metricsData = [], isLoading: metricsLoading, error: metricsError } = useSupabaseMetrics();
 
-  // Fetch real department and risk category data
+  // Get department data from local metrics data
   const { 
     departmentStructure, 
     departmentOptions, 
     loading: departmentLoading 
-  } = useDepartmentData();
+  } = useLocalDepartmentData(metricsData);
 
   const { 
     riskCategoryStructure, 

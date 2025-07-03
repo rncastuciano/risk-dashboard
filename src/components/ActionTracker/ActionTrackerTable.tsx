@@ -1,14 +1,20 @@
 
+import { useState, useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { StatusBadge } from '@/components/shared/StatusBadge';
+import { SeverityBadge } from '@/components/shared/SeverityBadge';
 import { ActionTracker } from '@/types';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ChevronUp, ChevronDown, ChevronsUpDown, AlertCircle } from 'lucide-react';
 
 interface ActionTrackerTableProps {
   insights: ActionTracker[];
 }
 
+type SortField = 'dueDate' | 'severity';
+type SortDirection = 'asc' | 'desc' | null;
+
 export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
+  const [sortField, setSortField] = useState<SortField | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>(null);
   const getTicketTypeBadge = (type: string) => {
     const colorMap: Record<string, string> = {
       'Incident': 'bg-red-100 text-red-800 border-red-200',
@@ -28,6 +34,89 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
   const getAzureDevOpsUrl = (ticketId: number | string) => {
     return `https://dev.azure.com/flagstoneim/flagstone/_workitems/edit/${ticketId}`;
   };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return dateString; // Return original if invalid date
+    
+    const day = date.getDate().toString().padStart(2, '0');
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+    
+    return `${day} ${month} ${year}`;
+  };
+
+  const isOverdue = (dateString: string) => {
+    if (!dateString) return false;
+    
+    const dueDate = new Date(dateString);
+    const today = new Date();
+    
+    // Set time to start of day for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    dueDate.setHours(0, 0, 0, 0);
+    
+    return dueDate < today;
+  };
+
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      // Cycle through: asc -> desc -> null
+      if (sortDirection === 'asc') {
+        setSortDirection('desc');
+      } else if (sortDirection === 'desc') {
+        setSortDirection(null);
+        setSortField(null);
+      }
+    } else {
+      setSortField(field);
+      setSortDirection('asc');
+    }
+  };
+
+  const getSortIcon = (field: SortField) => {
+    if (sortField !== field) {
+      return <ChevronsUpDown size={16} className="text-gray-400" />;
+    }
+    if (sortDirection === 'asc') {
+      return <ChevronUp size={16} className="text-blue-600" />;
+    }
+    if (sortDirection === 'desc') {
+      return <ChevronDown size={16} className="text-blue-600" />;
+    }
+    return <ChevronsUpDown size={16} className="text-gray-400" />;
+  };
+
+  const sortedInsights = useMemo(() => {
+    if (!sortField || !sortDirection) {
+      return insights;
+    }
+
+    return [...insights].sort((a, b) => {
+      let aValue: any;
+      let bValue: any;
+
+      if (sortField === 'dueDate') {
+        aValue = new Date(a.dueDate).getTime();
+        bValue = new Date(b.dueDate).getTime();
+      } else if (sortField === 'severity') {
+        // Define severity order (Critical > High > Medium > Low)
+        const severityOrder = { 'Critical': 4, 'High': 3, 'Medium': 2, 'Low': 1 };
+        aValue = severityOrder[a.severity as keyof typeof severityOrder] || 0;
+        bValue = severityOrder[b.severity as keyof typeof severityOrder] || 0;
+      }
+
+      if (sortDirection === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+  }, [insights, sortField, sortDirection]);
 
   return (
     <Card>
@@ -55,14 +144,30 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
                 <th className="text-left p-4">Owner</th>
                 <th className="text-left p-4">Department</th>
                 <th className="text-left p-4">Sub Department</th>
-                <th className="text-left p-4">Due Date</th>
-                <th className="text-left p-4">Criticality</th>
+                <th className="text-left p-4">
+                  <button
+                    onClick={() => handleSort('dueDate')}
+                    className="inline-flex items-center gap-1 hover:text-blue-600 transition-colors"
+                  >
+                    Due Date
+                    {getSortIcon('dueDate')}
+                  </button>
+                </th>
+                <th className="text-left p-4">
+                  <button
+                    onClick={() => handleSort('severity')}
+                    className="inline-flex items-center gap-1 hover:text-blue-600 transition-colors"
+                  >
+                    Criticality
+                    {getSortIcon('severity')}
+                  </button>
+                </th>
                 <th className="text-left p-4">Status</th>
               </tr>
             </thead>
             
             <tbody>
-              {insights.map((insight) => (
+              {sortedInsights.map((insight) => (
                 <tr key={insight.ticketId} className="border-b hover:bg-gray-50">
                   <td className="p-4 text-sm">
                     <a
@@ -82,12 +187,21 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
                   <td className="p-4">{insight.owner}</td>
                   <td className="p-4">{insight.department}</td>
                   <td className="p-4">{insight.subDepartment}</td>
-                  <td className="p-4">{insight.dueDate}</td>
                   <td className="p-4">
-                    <StatusBadge status={insight.severity} />
+                    <div className="flex items-center gap-2">
+                      <span className={isOverdue(insight.dueDate) ? 'text-red-600 font-medium' : ''}>
+                        {formatDate(insight.dueDate)}
+                      </span>
+                      {isOverdue(insight.dueDate) && (
+                        <AlertCircle size={16} className="text-red-600" />
+                      )}
+                    </div>
                   </td>
                   <td className="p-4">
-                    <StatusBadge status={insight.status} />
+                    <SeverityBadge severity={insight.severity} />
+                  </td>
+                  <td className="p-4">
+                    {insight.status}
                   </td>
                 </tr>
               ))}
