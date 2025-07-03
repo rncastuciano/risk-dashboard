@@ -14,7 +14,8 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
       'Incident': 'bg-red-100 text-red-800 border-red-200',
       'Issue': 'bg-yellow-100 text-yellow-800 border-yellow-200',
       'Risk Action': 'bg-purple-100 text-purple-800 border-purple-200',
-      'Risk': 'bg-gray-100 text-gray-800 border-gray-200'
+      'Exception': 'bg-orange-100 text-orange-800 border-orange-200',
+      'General': 'bg-gray-100 text-gray-800 border-gray-200',
     };
 
     return (
@@ -41,6 +42,8 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
               <col className="w-24" /> {/* Owner */}
               <col className="w-32" /> {/* Department */}
               <col className="w-32" /> {/* Sub Department */}
+              <col className="w-24" /> {/* Due Date */}
+              <col className="w-24" /> {/* Criticality */}
               <col className="w-24" /> {/* Status */}
             </colgroup>
             
@@ -52,6 +55,8 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
                 <th className="text-left p-4">Owner</th>
                 <th className="text-left p-4">Department</th>
                 <th className="text-left p-4">Sub Department</th>
+                <th className="text-left p-4">Due Date</th>
+                <th className="text-left p-4">Criticality</th>
                 <th className="text-left p-4">Status</th>
               </tr>
             </thead>
@@ -77,6 +82,10 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
                   <td className="p-4">{insight.owner}</td>
                   <td className="p-4">{insight.department}</td>
                   <td className="p-4">{insight.subDepartment}</td>
+                  <td className="p-4">{insight.dueDate}</td>
+                  <td className="p-4">
+                    <StatusBadge status={insight.severity} />
+                  </td>
                   <td className="p-4">
                     <StatusBadge status={insight.status} />
                   </td>

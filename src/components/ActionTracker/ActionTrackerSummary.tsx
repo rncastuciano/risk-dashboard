@@ -38,9 +38,9 @@ export const ActionTrackerSummary = ({
       if (filters.categories?.length || 0 > 0) {
         filterParts.push(`${filters.categories?.length || 0} category(s)`);
       }
-      return `Showing ${total} actions filtered by ${filterParts.join(' and ')} (excluding controls)`;
+      return `Showing ${total} actions filtered by ${filterParts.join(' and ')}`;
     }
-    return `Showing all ${total} action items across all departments and ticket types (excluding controls)`;
+    return `Showing all ${total} action items across all departments and ticket types`;
   };
 
   const handleTypeBoxClick = (ticketType: string) => {

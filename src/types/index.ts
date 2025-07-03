@@ -43,7 +43,6 @@ export interface ActionTracker {
   parentId?: number;
   description?: string;
   severity: 'Critical' | 'High' | 'Medium' | 'Low';
-  impact: string;
   dueDate?: string;
   createdDate?: string;
 }

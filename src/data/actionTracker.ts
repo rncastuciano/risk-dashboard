@@ -1,4 +1,3 @@
-
 import { ActionTracker } from '@/types';
 
 export const others: ActionTracker[] = [
@@ -11,7 +10,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "Closed",
     severity: "Medium",
-    impact: "System Downtime",
+    dueDate: "2024-07-15",
     parentId: 11
   },
   {
@@ -23,7 +22,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "Open",
     severity: "Low",
-    impact: "Performance Degradation",
+    dueDate: "2024-07-20",
     parentId: 11
   },
   {
@@ -35,7 +34,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "In Progress",
     severity: "Low",
-    impact: "Improved Detection",
+    dueDate: "2024-07-25",
     parentId: 11
   },
   {
@@ -47,7 +46,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "Closed",
     severity: "High",
-    impact: "Service Interruption",
+    dueDate: "2024-07-10",
     parentId: 12
   },
   {
@@ -59,7 +58,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "Planned",
     severity: "Medium",
-    impact: "Validation",
+    dueDate: "2024-07-30",
     parentId: 12
   },
   {
@@ -71,7 +70,7 @@ export const others: ActionTracker[] = [
     department: "People",
     status: "Closed",
     severity: "High",
-    impact: "Knowledge Loss",
+    dueDate: "2024-07-05",
     parentId: 13
   },
   {
@@ -83,7 +82,7 @@ export const others: ActionTracker[] = [
     department: "Finance",
     status: "Closed",
     severity: "Critical",
-    impact: "Portfolio Impact",
+    dueDate: "2024-07-12",
     parentId: 15
   },
   {
@@ -95,7 +94,7 @@ export const others: ActionTracker[] = [
     department: "Finance",
     status: "Closed",
     severity: "Medium",
-    impact: "Financial Impact",
+    dueDate: "2024-07-18",
     parentId: 17
   },
   {
@@ -107,7 +106,7 @@ export const others: ActionTracker[] = [
     department: "Technology",
     status: "Closed",
     severity: "High",
-    impact: "Security Breach",
+    dueDate: "2024-07-08",
     parentId: 19
   }
 ];
