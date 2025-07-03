@@ -70,9 +70,16 @@ export default function ActionTracker() {
 
   const filteredData = useMemo(() => {
     return actionTrackerData.filter(item => {
-      if (filters.departments?.length > 0 && !filters.departments.includes(item.department)) {
-        return false;
+      // Enhanced department filtering logic - check both department and subDepartment
+      if (filters.departments?.length > 0) {
+        const matchesDepartment = filters.departments.includes(item.department);
+        const matchesSubDepartment = filters.departments.includes(item.subDepartment);
+        
+        if (!matchesDepartment && !matchesSubDepartment) {
+          return false;
+        }
       }
+      
       if (filters.statuses?.length > 0 && !filters.statuses.includes(item.status)) {
         return false;
       }

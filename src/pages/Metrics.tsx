@@ -104,9 +104,16 @@ export default function Metrics() {
 
   const filteredMetrics = useMemo(() => {
     return metricsData.filter(metric => {
-      if (filters.departments?.length > 0 && !filters.departments.includes(metric.department)) {
-        return false;
+      // Enhanced department filtering logic - check both department and subDepartment
+      if (filters.departments?.length > 0) {
+        const matchesDepartment = filters.departments.includes(metric.department);
+        const matchesSubDepartment = filters.departments.includes(metric.subDepartment);
+        
+        if (!matchesDepartment && !matchesSubDepartment) {
+          return false;
+        }
       }
+      
       if (filters.statuses?.length > 0 && !filters.statuses.includes(metric.status)) {
         return false;
       }
