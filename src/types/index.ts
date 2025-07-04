@@ -11,9 +11,8 @@ export interface Risk {
   principalRiskCategory?: string;
   subRiskCategory?: string;
   parentId?: number;
-  controlType?: 'Preventive' | 'Detective' | 'Mitigating' | 'Contingency';
-  controlEffectiveness?: 'Effective' | 'Ineffective' | 'Partially Ineffective';
-  controlObjective?: string;
+  controlMaturity?: 'Automated' | 'Manual' | 'Auto w/ Manual Dependency';
+  controlEffectiveness?: string;
   severity?: 'Critical' | 'High' | 'Medium' | 'Low';
   impact?: string;
 }

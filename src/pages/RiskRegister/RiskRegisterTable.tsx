@@ -30,6 +30,24 @@ export function RiskRegisterTable({
     return acc;
   }, {} as Record<string, Risk[]>);
 
+  // Debug logging for grouping
+  console.log('📊 RiskRegisterTable - Grouping analysis:');
+  console.log('📊 Input filtered risks:', filteredRisks.length);
+  console.log('📊 Grouped by principal:', Object.keys(groupedByPrincipal));
+  console.log('📊 Group counts:', Object.entries(groupedByPrincipal).map(([key, risks]) => ({
+    category: key,
+    count: risks.length
+  })));
+  
+  // Show first few risks from each category
+  Object.entries(groupedByPrincipal).forEach(([category, risks]) => {
+    console.log(`📊 Category "${category}" sample:`, risks.slice(0, 2).map(risk => ({
+      ticketId: risk.ticketId,
+      title: risk.title,
+      subRiskCategory: risk.subRiskCategory
+    })));
+  });
+
   const renderSubCategories = (risksInCategory: Risk[], principalKey: string) => {
     const subCategories = [...new Set(risksInCategory.map(r => r.subRiskCategory).filter(Boolean))];
     
@@ -75,6 +93,7 @@ export function RiskRegisterTable({
   };
 
   const principalCategories = Object.keys(groupedByPrincipal);
+  console.log('📊 Principal categories to render:', principalCategories);
 
   return (
     <Card>
@@ -102,6 +121,8 @@ export function RiskRegisterTable({
                 const principalKey = `-${principalCategory}`;
                 const isPrincipalExpanded = expandedItems.has(principalKey);
                 const risksInCategory = groupedByPrincipal[principalCategory];
+                
+                console.log(`📊 Rendering category "${principalCategory}" with ${risksInCategory.length} risks, expanded: ${isPrincipalExpanded}`);
                 
                 return (
                   <React.Fragment key={principalKey}>

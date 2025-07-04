@@ -90,10 +90,19 @@ export const useRiskExpansion = (filteredRisks: Risk[], allRisksData: Risk[]) =>
   // Auto-expand all on initial load when data is available
   useEffect(() => {
     if (filteredRisks.length > 0 && allRisksData.length > 0 && expandedItems.size === 0) {
+      console.log('🔄 Auto-expanding all items on initial load');
       const allItems = getAllExpandedItems();
+      console.log('🔄 All items to expand:', Array.from(allItems));
       setExpandedItems(allItems);
     }
   }, [filteredRisks.length, allRisksData.length]);
+
+  console.log('🔄 useRiskExpansion debug:', {
+    expandAll,
+    expandedItemsCount: expandedItems.size,
+    expandedItems: Array.from(expandedItems),
+    filteredRisksCount: filteredRisks.length
+  });
 
   return {
     expandedItems,

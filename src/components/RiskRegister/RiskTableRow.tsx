@@ -34,7 +34,7 @@ export function RiskTableRow({
     
     return (
       <a
-        href={`https://dev.azure.com/organisation/prject/_workitems/edit/${risk.ticketId}`}
+        href={`https://dev.azure.com/flagstoneim/GRC/_workitems/edit/${risk.ticketId}`}
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center gap-1 text-blue-600 hover:text-blue-800 hover:underline"

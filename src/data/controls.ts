@@ -10,9 +10,8 @@ export const controls: Risk[] = [
     subDepartment: "IT Operations",
     department: "Technology",
     status: "Active",
-    controlType: "Preventive",
+    controlMaturity: "Automated",
     controlEffectiveness: "Effective",
-    controlObjective: "Availability & Performance",
     parentId: 1
   },
   {
@@ -23,9 +22,8 @@ export const controls: Risk[] = [
     subDepartment: "IT Operations",
     department: "Technology",
     status: "Active",
-    controlType: "Contingency",
+    controlMaturity: "Auto w/ Manual Dependency",
     controlEffectiveness: "Ineffective",
-    controlObjective: "Business Continuity",
     parentId: 1
   },
   {
@@ -36,9 +34,8 @@ export const controls: Risk[] = [
     subDepartment: "Human Resource",
     department: "People",
     status: "Active",
-    controlType: "Preventive",
+    controlMaturity: "Manual",
     controlEffectiveness: "Partially Ineffective",
-    controlObjective: "Knowledge Management",
     parentId: 2
   },
   {
@@ -49,9 +46,8 @@ export const controls: Risk[] = [
     subDepartment: "Human Resource",
     department: "People",
     status: "Active",
-    controlType: "Preventive",
+    controlMaturity: "Manual",
     controlEffectiveness: "Effective",
-    controlObjective: "Human Resources",
     parentId: 2
   },
   {
@@ -62,9 +58,8 @@ export const controls: Risk[] = [
     subDepartment: "Finance",
     department: "Finance",
     status: "Active",
-    controlType: "Mitigating",
+    controlMaturity: "Automated",
     controlEffectiveness: "Effective",
-    controlObjective: "Financial Risk Management",
     parentId: 3
   },
   {
@@ -75,9 +70,8 @@ export const controls: Risk[] = [
     subDepartment: "Finance",
     department: "Finance",
     status: "Active",
-    controlType: "Mitigating",
+    controlMaturity: "Auto w/ Manual Dependency",
     controlEffectiveness: "Ineffective",
-    controlObjective: "Financial Risk Management",
     parentId: 3
   },
   {
@@ -88,9 +82,8 @@ export const controls: Risk[] = [
     subDepartment: "Finance",
     department: "Finance",
     status: "Active",
-    controlType: "Detective",
+    controlMaturity: "Manual",
     controlEffectiveness: "Partially Ineffective",
-    controlObjective: "Financial Controls",
     parentId: 4
   },
   {
@@ -101,9 +94,8 @@ export const controls: Risk[] = [
     subDepartment: "Finance",
     department: "Finance",
     status: "Active",
-    controlType: "Preventive",
+    controlMaturity: "Auto w/ Manual Dependency",
     controlEffectiveness: "Effective",
-    controlObjective: "Financial Controls",
     parentId: 4
   },
   {
@@ -114,9 +106,8 @@ export const controls: Risk[] = [
     subDepartment: "IT Security",
     department: "Technology",
     status: "Active",
-    controlType: "Preventive",
+    controlMaturity: "Automated",
     controlEffectiveness: "Effective",
-    controlObjective: "Cybersecurity",
     parentId: 5
   },
   {
@@ -127,9 +118,8 @@ export const controls: Risk[] = [
     subDepartment: "IT Security",
     department: "Technology",
     status: "Active",
-    controlType: "Preventive",
+    controlMaturity: "Manual",
     controlEffectiveness: "Partially Ineffective",
-    controlObjective: "Security Awareness",
     parentId: 5
   }
 ];
