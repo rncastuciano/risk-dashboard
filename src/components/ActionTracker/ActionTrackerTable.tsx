@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { SeverityBadge } from '@/components/shared/SeverityBadge';
 import { ActionTracker } from '@/types';
 import { ExternalLink, ChevronUp, ChevronDown, ChevronsUpDown, AlertCircle } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface ActionTrackerTableProps {
   insights: ActionTracker[];
@@ -240,7 +241,18 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
                         {formatDate(insight.dueDate)}
                       </span>
                       {isOverdue(insight.dueDate) && (
-                        <AlertCircle size={16} className="text-red-600" />
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <span>
+                                <AlertCircle size={16} className="text-red-600" />
+                              </span>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p className="text-xs">Overdue</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       )}
                     </div>
                   </td>

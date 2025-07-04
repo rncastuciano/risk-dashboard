@@ -21,7 +21,7 @@ export default function Metrics() {
     clearFilters, 
     hasActiveFilters,
     setFilters
-  } = useGenericFilters();
+  } = useGenericFilters({}, 'metrics');
 
   const {
     isFavorite,
@@ -29,11 +29,10 @@ export default function Metrics() {
     removeFavoriteFilter,
     loadFavoriteFilter,
     hasActiveFilters: hasFavoriteFilters
-  } = useFavoriteFilters(filters);
+  } = useFavoriteFilters(filters, setFilters, 'metrics');
 
   const handleLoadFavorite = () => {
-    const favoriteFilters = loadFavoriteFilter();
-    setFilters(favoriteFilters);
+    loadFavoriteFilter(); // Now handles the filter loading internally
   };
 
   // Use mock metrics data instead of Supabase

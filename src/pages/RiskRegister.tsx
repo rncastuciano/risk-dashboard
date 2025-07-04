@@ -22,7 +22,7 @@ export default function RiskRegister() {
     clearFilters: clearDropdownFilters, 
     hasActiveFilters: hasActiveDropdownFilters,
     setFilters
-  } = useGenericFilters();
+  } = useGenericFilters({}, 'riskRegister');
 
   const {
     isFavorite,
@@ -30,11 +30,10 @@ export default function RiskRegister() {
     removeFavoriteFilter,
     loadFavoriteFilter,
     hasActiveFilters: hasFavoriteFilters
-  } = useFavoriteFilters(dropdownFilters);
+  } = useFavoriteFilters(dropdownFilters, setFilters, 'riskRegister');
 
   const handleLoadFavorite = () => {
-    const favoriteFilters = loadFavoriteFilter();
-    setFilters(favoriteFilters);
+    loadFavoriteFilter(); // Now handles the filter loading internally
   };
 
   const handleRefresh = () => {

@@ -29,7 +29,7 @@ export default function ActionTracker() {
     clearFilters, 
     hasActiveFilters,
     setFilters
-  } = useGenericFilters();
+  } = useGenericFilters({}, 'actionTracker');
 
   const {
     isFavorite,
@@ -37,7 +37,7 @@ export default function ActionTracker() {
     removeFavoriteFilter,
     loadFavoriteFilter,
     hasActiveFilters: hasFavoriteFilters
-  } = useFavoriteFilters(filters);
+  } = useFavoriteFilters(filters, setFilters, 'actionTracker');
 
   const handleRefresh = () => {
     // Force re-render and refetch data from API
@@ -46,8 +46,7 @@ export default function ActionTracker() {
   };
 
   const handleLoadFavorite = () => {
-    const favoriteFilters = loadFavoriteFilter();
-    setFilters(favoriteFilters);
+    loadFavoriteFilter(); // Now handles the filter loading internally
   };
 
   // Get department data from API data
