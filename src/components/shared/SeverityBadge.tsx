@@ -4,6 +4,11 @@ interface SeverityBadgeProps {
 
 export const SeverityBadge = ({ severity }: SeverityBadgeProps) => {
   const getSeverityBadge = (severity: string) => {
+    // If severity is null, undefined, or empty, return plain text
+    if (!severity || severity.trim() === '') {
+      return <span>{severity || ''}</span>;
+    }
+
     const colorMap: Record<string, string> = {
       'Critical': 'bg-red-100 text-red-800 border-red-200',
       'High': 'bg-orange-100 text-orange-800 border-orange-200',

@@ -13,7 +13,7 @@ export function AppSidebar() {
   } = useSidebar();
   return <>
       <Sidebar variant="sidebar" collapsible="icon">
-        <div className="flex justify-end p-2">
+        <div className="flex justify-end p-3">
           <SidebarTrigger className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100">
             {state === "expanded" ? <PanelLeftClose className="h-5 w-5" /> : <PanelLeft className="h-5 w-5" />}
           </SidebarTrigger>
@@ -21,7 +21,7 @@ export function AppSidebar() {
         <SidebarContent className="pt-2">
           <SidebarGroup>
             <SidebarGroupContent>
-              <div className="px-0">
+              <div className="px-2">
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild isActive={currentPath === '/'} tooltip="Risk Overview" className={cn("transition-colors", currentPath === "/" && "bg-blue-50 text-blue-800")}>

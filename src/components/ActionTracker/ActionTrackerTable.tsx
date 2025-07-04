@@ -65,7 +65,7 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      // Cycle through: asc -> desc -> null
+      // Cycle through: asc -> desc -> null (back to default)
       if (sortDirection === 'asc') {
         setSortDirection('desc');
       } else if (sortDirection === 'desc') {
@@ -92,29 +92,76 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
   };
 
   const sortedInsights = useMemo(() => {
-    if (!sortField || !sortDirection) {
-      return insights;
-    }
-
     return [...insights].sort((a, b) => {
-      let aValue: any;
-      let bValue: any;
+      const severityOrder = { 'Major Incident': 4, 'Critical': 4, 'High': 3, 'Incident': 2, 'Medium': 2, 'Low': 1 };
+      
+      // If user has manually selected a sort field, apply that as the primary sort
+      if (sortField && sortDirection) {
+        let aValue: any;
+        let bValue: any;
 
-      if (sortField === 'dueDate') {
-        aValue = new Date(a.dueDate).getTime();
-        bValue = new Date(b.dueDate).getTime();
-      } else if (sortField === 'severity') {
-        // Define severity order (Critical > High > Medium > Low)
-        const severityOrder = { 'Critical': 4, 'High': 3, 'Medium': 2, 'Low': 1 };
-        aValue = severityOrder[a.severity as keyof typeof severityOrder] || 0;
-        bValue = severityOrder[b.severity as keyof typeof severityOrder] || 0;
-      }
+        if (sortField === 'dueDate') {
+          // Handle null/empty dates by putting them at the end
+          const aDateStr = a.dueDate?.trim();
+          const bDateStr = b.dueDate?.trim();
+          
+          // If both are empty, they're equal
+          if (!aDateStr && !bDateStr) return 0;
+          // If only a is empty, put it at the end
+          if (!aDateStr) return 1;
+          // If only b is empty, put it at the end
+          if (!bDateStr) return -1;
+          
+          // Both have dates, compare them
+          aValue = new Date(aDateStr).getTime();
+          bValue = new Date(bDateStr).getTime();
+          
+          // Handle invalid dates (NaN) by putting them at the end
+          if (isNaN(aValue) && isNaN(bValue)) return 0;
+          if (isNaN(aValue)) return 1;
+          if (isNaN(bValue)) return -1;
+        } else if (sortField === 'severity') {
+          aValue = severityOrder[a.severity as keyof typeof severityOrder] || 0;
+          bValue = severityOrder[b.severity as keyof typeof severityOrder] || 0;
+        }
 
-      if (sortDirection === 'asc') {
-        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-      } else {
-        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+        if (sortDirection === 'asc') {
+          return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+        } else {
+          return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+        }
       }
+      
+      // Default sorting: first by criticality (severity descending), then by due date (ascending)
+      const aSeverity = severityOrder[a.severity as keyof typeof severityOrder] || 0;
+      const bSeverity = severityOrder[b.severity as keyof typeof severityOrder] || 0;
+      
+      if (aSeverity !== bSeverity) {
+        return bSeverity - aSeverity; // Descending order (Critical first)
+      }
+      
+      // If severity is the same, sort by due date (ascending - earliest first)
+      // Handle null/empty dates by putting them at the end
+      const aDateStr = a.dueDate?.trim();
+      const bDateStr = b.dueDate?.trim();
+      
+      // If both are empty, they're equal
+      if (!aDateStr && !bDateStr) return 0;
+      // If only a is empty, put it at the end
+      if (!aDateStr) return 1;
+      // If only b is empty, put it at the end
+      if (!bDateStr) return -1;
+      
+      // Both have dates, compare them
+      const aDate = new Date(aDateStr).getTime();
+      const bDate = new Date(bDateStr).getTime();
+      
+      // Handle invalid dates (NaN) by putting them at the end
+      if (isNaN(aDate) && isNaN(bDate)) return 0;
+      if (isNaN(aDate)) return 1;
+      if (isNaN(bDate)) return -1;
+      
+      return aDate - bDate; // Ascending order (earliest first)
     });
   }, [insights, sortField, sortDirection]);
 
@@ -125,15 +172,15 @@ export const ActionTrackerTable = ({ insights }: ActionTrackerTableProps) => {
         <div className="max-h-[70vh] overflow-auto">
           <table className="w-full text-sm table-fixed min-w-[800px]">
             <colgroup>
-              <col className="w-32" /> {/* Ticket ID */}
-              <col className="w-80" /> {/* Title */}
-              <col className="w-32" /> {/* Type */}
+              <col className="w-20" /> {/* Ticket ID */}
+              <col className="w-64" /> {/* Title */}
+              <col className="w-20" /> {/* Type */}
               <col className="w-24" /> {/* Owner */}
-              <col className="w-32" /> {/* Department */}
-              <col className="w-32" /> {/* Sub Department */}
-              <col className="w-24" /> {/* Due Date */}
-              <col className="w-24" /> {/* Criticality */}
-              <col className="w-24" /> {/* Status */}
+              <col className="w-24" /> {/* Department */}
+              <col className="w-28" /> {/* Sub Department */}
+              <col className="w-20" /> {/* Due Date */}
+              <col className="w-20" /> {/* Criticality */}
+              <col className="w-20" /> {/* Status */}
             </colgroup>
             
             <thead className="bg-gray-50 border-b sticky top-0 z-20">
